@@ -1,0 +1,453 @@
+{
+    "include": [
+        "guitar"
+    ],
+    "settings": {
+        "strict": true,
+        "lineinfo": true,
+        "titles": "left",
+        "columns": 2,
+        "suppress-empty-chords": true,
+        "suppress-empty-lyrics": true,
+        "lyrics-only": false,
+        "memorize": false,
+        "inline-chords": false,
+        "chords-under": false,
+        "transpose": 0,
+        "transcode": "",
+        "decapo": false,
+        "chordnames": "strict",
+        "notenames": false
+    },
+    "metadata": {
+        "keys": [
+            "title",
+            "subtitle",
+            "artist",
+            "composer",
+            "lyricist",
+            "arranger",
+            "album",
+            "copyright",
+            "year",
+            "sorttitle",
+            "key",
+            "time",
+            "tempo",
+            "capo",
+            "duration"
+        ],
+        "strict": true,
+        "separator": "; "
+    },
+    "meta": {},
+    "dates": {
+        "today": {
+            "format": "%A, %B %e, %Y"
+        }
+    },
+    "user": {
+        "name": "",
+        "fullname": ""
+    },
+    "instrument": {
+        "type": "",
+        "description": ""
+    },
+    "tuning": [
+        "E2",
+        "A2",
+        "D3",
+        "G3",
+        "B3",
+        "E4"
+    ],
+    "notes": {
+        "system": "common",
+        "sharp": [
+            "C",
+            [
+                "C#",
+                "Cis",
+                "C\u266f"
+            ],
+            "D",
+            [
+                "D#",
+                "Dis",
+                "D\u266f"
+            ],
+            "E",
+            "F",
+            [
+                "F#",
+                "Fis",
+                "F\u266f"
+            ],
+            "G",
+            [
+                "G#",
+                "Gis",
+                "G\u266f"
+            ],
+            "A",
+            [
+                "A#",
+                "Ais",
+                "A\u266f"
+            ],
+            "B"
+        ],
+        "flat": [
+            "C",
+            [
+                "Db",
+                "Des",
+                "D\u266d"
+            ],
+            "D",
+            [
+                "Eb",
+                "Es",
+                "Ees",
+                "E\u266d"
+            ],
+            "E",
+            "F",
+            [
+                "Gb",
+                "Ges",
+                "G\u266d"
+            ],
+            "G",
+            [
+                "Ab",
+                "As",
+                "Aes",
+                "A\u266d"
+            ],
+            "A",
+            [
+                "Bb",
+                "Bes",
+                "B\u266d"
+            ],
+            "B"
+        ],
+        "movable": false
+    },
+    "chords": [],
+    "diagrams": {
+        "show": "none"
+    },
+    "diagnostics": {
+        "format": "\"%f\", line %n, %m\n\t%l"
+    },
+    "contents": [
+        {
+            "fields": [
+                "songindex"
+            ],
+            "label": "Table of Contents",
+            "line": "%{title}",
+            "pageno": "%{page}",
+            "fold": false,
+            "omit": false
+        },
+        {
+            "fields": [
+                "sorttitle",
+                "artist"
+            ],
+            "label": "Contents by Title",
+            "line": "%{title}%{artist| - %{}}",
+            "pageno": "%{page}",
+            "fold": false,
+            "omit": false
+        },
+        {
+            "fields": [
+                "artist",
+                "sorttitle"
+            ],
+            "label": "Contents by Artist",
+            "line": "%{artist|%{} - }%{title}",
+            "pageno": "%{page}",
+            "fold": false,
+            "omit": true
+        }
+    ],
+    "toc": {
+        "title": "Table of Contents",
+        "line": "%{title}",
+        "order": "page"
+    },
+    "delegates": {
+        "abc": {
+            "type": "image",
+            "handler": "abc2image"
+        },
+        "ly": {
+            "type": "image",
+            "handler": "ly2image"
+        }
+    },
+    "pdf": {
+        "info": {
+            "title": "%{title}",
+            "author": "",
+            "subject": "",
+            "keywords": ""
+        },
+        "papersize": "a4",
+        "theme": {
+            "foreground": "black",
+            "background": "none"
+        },
+        "columnspace": 20,
+        "margintop": 80,
+        "marginbottom": 40,
+        "marginleft": 40,
+        "marginright": 40,
+        "headspace": 60,
+        "footspace": 20,
+        "head-first-only": false,
+        "spacing": {
+            "title": 1.2,
+            "lyrics": 1.2,
+            "chords": 1.2,
+            "grid": 1.2,
+            "tab": 1.0,
+            "toc": 1.4,
+            "empty": 1.2
+        },
+        "chorus": {
+            "indent": 2,
+            "bar": {
+                "offset": 8,
+                "width": 1,
+                "color": "foreground"
+            },
+            "tag": "Chorus",
+            "recall": {
+                "choruslike": false,
+                "tag": "Chorus",
+                "type": "comment_box",
+                "quote": false
+            }
+        },
+        "labels": {
+            "width": "auto",
+            "align": "left",
+            "comment": ""
+        },
+        "chordscolumn": 0,
+        "capoheading": "%{capo|Capo: %{}}",
+        "titles-directive-ignore": false,
+        "diagrams": {
+            "show": "bottom",
+            "width": 6,
+            "height": 6,
+            "vcells": 4,
+            "linewidth": 0.1,
+            "hspace": 3.95,
+            "vspace": 3
+        },
+        "kbdiagrams": {
+            "show": "bottom",
+            "width": 4,
+            "height": 20,
+            "keys": 14,
+            "base": "C",
+            "linewidth": 0.1,
+            "pressed": "grey",
+            "hspace": 3.95,
+            "vspace": 0.3
+        },
+        "even-odd-pages": 1,
+        "pagealign-songs": 1,
+        "formats": {
+            "default": {
+                "title": [
+                    "",
+                    "",
+                    ""
+                ],
+                "subtitle": [
+                    "",
+                    "",
+                    ""
+                ],
+                "footer": [
+                    "%{title}",
+                    "",
+                    "%{page}"
+                ]
+            },
+            "title": {
+                "title": [
+                    "",
+                    "%{title}",
+                    ""
+                ],
+                "subtitle": [
+                    "",
+                    "By %{artist}, %{time}, Suggested BPM: %{tempo}",
+                    ""
+                ],
+                "footer": [
+                    "",
+                    "",
+                    "%{page}"
+                ]
+            },
+            "first": {
+                "footer": [
+                    "",
+                    "",
+                    ""
+                ]
+            }
+        },
+        "split-marker": [
+            "",
+            "",
+            ""
+        ],
+        "fontdir": [],
+        "fontconfig": {
+            "times": {
+                "": "Times-Roman",
+                "bold": "Times-Bold",
+                "italic": "Times-Italic",
+                "bolditalic": "Times-BoldItalic"
+            },
+            "helvetica": {
+                "": "Helvetica",
+                "bold": "Helvetica-Bold",
+                "oblique": "Helvetica-Oblique",
+                "boldoblique": "Helvetica-BoldOblique"
+            },
+            "courier": {
+                "": "Courier",
+                "bold": "Courier-Bold",
+                "italic": "Courier-Italic",
+                "bolditalic": "Courier-BoldItalic"
+            },
+            "dingbats": {
+                "": "ZapfDingbats"
+            }
+        },
+        "fonts": {
+            "title": {
+                "name": "Helvetica-Bold",
+                "size": 14
+            },
+            "text": {
+                "name": "Helvetica",
+                "size": 12
+            },
+            "chord": {
+                "name": "Helvetica-Bold",
+                "size": 10
+            },
+            "chordfingers": {
+                "name": "ZapfDingbats",
+                "size": 10,
+                "numbercolor": "background"
+            },
+            "comment": {
+                "name": "Helvetica-Bold",
+                "size": 11,
+                "background": "#FFFFFF"
+            },
+            "comment_italic": {
+                "name": "Helvetica-Oblique",
+                "size": 11
+            },
+            "comment_box": {
+                "name": "Helvetica-Bold",
+                "size": 12,
+                "frame": 1
+            },
+            "tab": {
+                "name": "Courier",
+                "size": 10
+            },
+            "toc": {
+                "name": "Times-Roman",
+                "size": 11
+            },
+            "grid": {
+                "name": "Helvetica",
+                "size": 10
+            }
+        },
+        "outlines": [
+            {
+                "fields": [
+                    "sorttitle",
+                    "artist"
+                ],
+                "label": "By Title",
+                "line": "%{title}%{artist| - %{}}",
+                "collapse": false,
+                "letter": 5,
+                "fold": false
+            },
+            {
+                "fields": [
+                    "artist",
+                    "sorttitle"
+                ],
+                "label": "By Artist",
+                "line": "%{artist|%{} - }%{title}",
+                "collapse": false,
+                "letter": 5,
+                "fold": false
+            }
+        ],
+        "showlayout": false,
+        "csv": {
+            "songsonly": true
+        }
+    },
+    "chordpro": {
+        "chorus": {
+            "recall": {
+                "tag": "",
+                "type": "",
+                "quote": false
+            }
+        }
+    },
+    "html": {
+        "styles": {
+            "display": "chordpro.css"
+        }
+    },
+    "a2crd": {
+        "infer-titles": true,
+        "classifier": "pct_chords",
+        "tabstop": 8
+    },
+    "parser": {
+        "preprocess": {
+            "all": [],
+            "directive": [],
+            "songline": []
+        }
+    },
+    "debug": {
+        "config": 0,
+        "fonts": 0,
+        "images": 0,
+        "layout": 0,
+        "meta": 0,
+        "mma": 0,
+        "spacing": 0,
+        "song": 0,
+        "abc": 0,
+        "ly": 0
+    }
+}

@@ -1,0 +1,12 @@
+# Use the main Dockerfile as the base
+FROM chordpro-base
+
+# Copy the test requirements file
+COPY requirements-dev.txt /app/requirements-dev.txt
+COPY tests /app/tests
+
+# Install test dependencies
+RUN pip3 install -r requirements-dev.txt
+
+# Set the default command to run pytest
+CMD ["pytest"]
