@@ -34,7 +34,13 @@ def build_paths(chord_pro_content: str, css_path: Path):
 
 def generate_html(chord_pro_content: str, transpose: int, css_path: Path = DATA_PATH / "default.css") -> dict:
     with build_paths(chord_pro_content, css_path) as (chord_pro_path, config_path):
-        command = ["chordpro", chord_pro_path, f"--transpose={str(transpose)}", f"--config={config_path}", "--generate=HTML"]
+        command = [
+            "chordpro",
+            chord_pro_path,
+            f"--transpose={str(transpose)}",
+            f"--config={config_path}",
+            "--generate=HTML",
+        ]
 
         result = subprocess.run(command, capture_output=True)
         
@@ -64,7 +70,15 @@ def generate_pdf(chord_pro_content: str, transpose: int, css_path: Path = DATA_P
 
         with NamedTemporaryFile(mode="w+", suffix=".pdf") as pdf_file:
             # use google-chrome to generate pdf
-            command = ["google-chrome", "--no-sandbox", "--headless", "--disable-gpu", "--print-to-pdf-no-header", f"--print-to-pdf={pdf_file.name}", html_file.name]
+            command = [
+                "google-chrome",
+                "--no-sandbox",
+                "--headless",
+                "--disable-gpu",
+                "--print-to-pdf-no-header",
+                f"--print-to-pdf={pdf_file.name}",
+                html_file.name,
+            ]
 
             subprocess.run(command)
 

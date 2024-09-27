@@ -2,8 +2,6 @@ from flask import Flask, request, jsonify, send_file
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from src.generator import generate_html, generate_pdf
-from pathlib import Path
-import tempfile
 import os
 
 app = Flask(__name__)

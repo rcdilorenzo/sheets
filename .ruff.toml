@@ -1,0 +1,28 @@
+# Exclude some directories
+exclude = [
+    ".git",
+    "venv",
+    "__pycache__",
+    "build",
+    "dist",
+    "web",
+]
+
+# Set the Python version to Python 3.10.
+target-version = "py310"
+
+# Set maximum line length
+line-length = 120
+
+[lint]
+# Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default.
+select = ["E", "F"]
+ignore = []
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["A", "B", "C", "D", "E", "F"]
+unfixable = []
+
+[lint.per-file-ignores]
+# Ignore some errors in specific files
+"tests/*" = ["E501"]
