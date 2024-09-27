@@ -2,10 +2,7 @@
 FROM ubuntu:22.04
 
 # Install required packages
-RUN apt-get update -y
-
-# Install deps
-RUN apt-get install -y wget perl curl software-properties-common make libwx-perl
+RUN apt-get update && apt-get install -y wget perl curl software-properties-common make libwx-perl
 
 # Install ChordPro
 RUN cpan -T chordpro
