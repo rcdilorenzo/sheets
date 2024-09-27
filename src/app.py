@@ -1,12 +1,14 @@
 import os
 
-from flask import Flask, jsonify, request, send_file
+from flask import Flask, jsonify, request, send_file, send_from_directory
+from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
 from src.generator import generate_html, generate_pdf
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="../web/out", static_url_path="")
+CORS(app)
 
 # Set up rate limiting
 limiter = Limiter(key_func=get_remote_address, app=app, default_limits=["200 per day", "50 per hour"])
@@ -31,6 +33,15 @@ def generate_endpoint():
             return send_file(result["pdf"], mimetype="application/pdf", as_attachment=True, download_name="sheet.pdf")
     else:
         return jsonify({"error": "Invalid 'type'. Must be 'html' or 'pdf'."}), 400
+
+
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def serve(path):
+    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, "index.html")
 
 
 if __name__ == "__main__":

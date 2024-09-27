@@ -5,8 +5,10 @@ FROM sheets-base
 COPY requirements-dev.txt /app/requirements-dev.txt
 COPY tests /app/tests
 
-# Install test dependencies
+# Install dev/test dependencies
 RUN pip3 install -r requirements-dev.txt
+
+ENV PYTHONPATH=/app
 
 # Set the default command to run pytest
 CMD ["pytest"]

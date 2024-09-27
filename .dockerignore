@@ -1,0 +1,37 @@
+# Node modules
+web/node_modules
+
+# Next.js build output
+web/.next
+web/out
+
+# Logs
+web/npm-debug.log*
+web/yarn-debug.log*
+web/yarn-error.log*
+
+# Environment variables
+web/.env*.local
+
+# Vercel
+web/.vercel
+
+# TypeScript
+web/*.tsbuildinfo
+web/next-env.d.ts
+
+# Python virtual environment
+venv/
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# Editor directories and files
+.idea
+.vscode
+*.swp
+*.swo

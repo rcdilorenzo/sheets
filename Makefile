@@ -46,6 +46,9 @@ format:
 format-check:
 	$(VENV_NAME)/bin/ruff format --check .
 
+run:
+	$(DOCKER) run -p 8081:8081 sheets-base
+
 # Install pre-commit hook
 install-hooks:
 	@echo "Installing pre-commit hook..."
