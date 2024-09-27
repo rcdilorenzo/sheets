@@ -24,6 +24,6 @@ def test_generate_pdf():
     with open(TEST_DATA_PATH / "we-three-kings.chordpro", "r") as f:
         chord_pro_content = f.read()
 
-    with generate_pdf("test.pdf", chord_pro_content, 0) as result:
+    with generate_pdf(chord_pro_content, 0) as result:
         assert "pdf" in result
         assert "error" in result

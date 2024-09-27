@@ -17,10 +17,11 @@ def test_generate_html_endpoint(client):
 
     data = {
         "content": chord_pro_content,
-        "transpose": 0
+        "transpose": 0,
+        "type": "html"
     }
 
-    response = client.post('/generate_html', 
+    response = client.post('/api/generate', 
                            data=json.dumps(data),
                            content_type='application/json')
 
@@ -37,25 +38,42 @@ def test_generate_pdf_endpoint(client):
 
     data = {
         "content": chord_pro_content,
-        "transpose": 0
+        "transpose": 0,
+        "type": "pdf"
     }
 
-    response = client.post('/generate_pdf', 
+    response = client.post('/api/generate', 
                            data=json.dumps(data),
                            content_type='application/json')
 
     assert response.status_code == 200
     assert response.headers['Content-Type'] == 'application/pdf'
-    assert response.headers['Content-Disposition'] == 'attachment; filename=generated_sheet.pdf'
+    assert response.headers['Content-Disposition'] == 'attachment; filename=sheet.pdf'
     assert len(response.data) > 0
 
 def test_invalid_request(client):
     data = {
-        "content": "Invalid content"
-        # Missing 'transpose' field
+        "content": "Invalid content",
+        "transpose": 0
+        # Missing 'type' field
     }
 
-    response = client.post('/generate_html', 
+    response = client.post('/api/generate', 
+                           data=json.dumps(data),
+                           content_type='application/json')
+
+    assert response.status_code == 400
+    result = json.loads(response.data)
+    assert 'error' in result
+
+def test_invalid_type(client):
+    data = {
+        "content": "Test content",
+        "transpose": 0,
+        "type": "invalid"
+    }
+
+    response = client.post('/api/generate', 
                            data=json.dumps(data),
                            content_type='application/json')
 
@@ -66,12 +84,13 @@ def test_invalid_request(client):
 def test_rate_limiting(client):
     data = {
         "content": "Test content",
-        "transpose": 0
+        "transpose": 0,
+        "type": "html"
     }
 
     # Make 11 requests to trigger rate limiting
     for _ in range(11):
-        response = client.post('/generate_html', 
+        response = client.post('/api/generate', 
                                data=json.dumps(data),
                                content_type='application/json')
 

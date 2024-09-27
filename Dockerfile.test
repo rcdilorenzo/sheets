@@ -1,5 +1,5 @@
 # Use the main Dockerfile as the base
-FROM chordpro-base
+FROM sheets-base
 
 # Copy the test requirements file
 COPY requirements-dev.txt /app/requirements-dev.txt

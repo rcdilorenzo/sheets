@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_file, after_this_request
+from flask import Flask, request, jsonify, send_file
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from src.generator import generate_html, generate_pdf
@@ -15,37 +15,25 @@ limiter = Limiter(
     default_limits=["200 per day", "50 per hour"]
 )
 
-@app.route('/generate_html', methods=['POST'])
+@app.route('/api/generate', methods=['POST'])
 @limiter.limit("10 per minute")
-def html_endpoint():
+def generate_endpoint():
     data = request.json
-    if not data or 'content' not in data or 'transpose' not in data:
-        return jsonify({"error": "Invalid request. 'content' and 'transpose' are required."}), 400
+    if not data or 'content' not in data or 'transpose' not in data or 'type' not in data:
+        return jsonify({"error": "Invalid request. 'content', 'transpose', and 'type' are required."}), 400
 
     chord_pro_content = data['content']
     transpose = data['transpose']
+    generate_type = data['type']
 
-    result = generate_html(chord_pro_content, transpose)
-    return jsonify(result)
-
-@app.route('/generate_pdf', methods=['POST'])
-@limiter.limit("5 per minute")
-def pdf_endpoint():
-    data = request.json
-    if not data or 'content' not in data or 'transpose' not in data:
-        return jsonify({"error": "Invalid request. 'content' and 'transpose' are required."}), 400
-
-    chord_pro_content = data['content']
-    transpose = data['transpose']
-
-    with generate_pdf(chord_pro_content, transpose) as result:
-        @after_this_request
-        def cleanup(response):
-            if Path(result['pdf']).exists():
-                os.remove(result['pdf'])
-            return response
-
-        return send_file(result['pdf'], mimetype='application/pdf', as_attachment=True, download_name="sheet.pdf")
+    if generate_type == 'html':
+        result = generate_html(chord_pro_content, transpose)
+        return jsonify(result)
+    elif generate_type == 'pdf':
+        with generate_pdf(chord_pro_content, transpose) as result:
+            return send_file(result['pdf'], mimetype='application/pdf', as_attachment=True, download_name="sheet.pdf")
+    else:
+        return jsonify({"error": "Invalid 'type'. Must be 'html' or 'pdf'."}), 400
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8081))
