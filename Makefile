@@ -8,7 +8,7 @@ PYTEST := $(VENV_NAME)/bin/pytest
 DOCKER := docker
 
 # Phony targets
-.PHONY: all venv dev-venv test clean lint lint-fix
+.PHONY: all venv dev-venv test clean lint lint-fix format format-check
 
 # Default target
 all: venv
@@ -34,13 +34,17 @@ clean:
 	find . -type f -name '*.pyc' -delete
 	find . -type d -name '__pycache__' -delete
 
-# Run ruff
 lint:
 	$(VENV_NAME)/bin/ruff check .
 
-# Run ruff with auto-fix
 lint-fix:
 	$(VENV_NAME)/bin/ruff check --fix .
+
+format:
+	$(VENV_NAME)/bin/ruff format .
+
+format-check:
+	$(VENV_NAME)/bin/ruff format --check .
 
 # Install pre-commit hook
 install-hooks:

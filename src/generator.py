@@ -1,11 +1,13 @@
-from contextlib import contextmanager
 import json
-from pathlib import Path
 import subprocess
+from contextlib import contextmanager
+from pathlib import Path
 from tempfile import NamedTemporaryFile
+
 from bs4 import BeautifulSoup
 
 DATA_PATH = Path(__file__).parent.parent / "data"
+
 
 @contextmanager
 def build_config(css_path: Path):
@@ -19,6 +21,7 @@ def build_config(css_path: Path):
             output_file.flush()
 
             yield output_file.name
+
 
 @contextmanager
 def build_paths(chord_pro_content: str, css_path: Path):
@@ -43,7 +46,7 @@ def generate_html(chord_pro_content: str, transpose: int, css_path: Path = DATA_
         ]
 
         result = subprocess.run(command, capture_output=True)
-        
+
         soup = BeautifulSoup(result.stdout, "html.parser")
         with open(css_path, "r") as css_file:
             css_content = css_file.read()
@@ -54,11 +57,11 @@ def generate_html(chord_pro_content: str, transpose: int, css_path: Path = DATA_
             style_tag.string = css_content
             body.insert_after(style_tag)
 
-
         return {
             "html": soup.prettify(),
-            "error": result.stderr.decode('utf-8'),
+            "error": result.stderr.decode("utf-8"),
         }
+
 
 @contextmanager
 def generate_pdf(chord_pro_content: str, transpose: int, css_path: Path = DATA_PATH / "default.css"):
