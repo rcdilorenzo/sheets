@@ -39,19 +39,19 @@ div.verse, div.chorus {
 
 /* FONT SETTINGS */
 body {
-    font-family: "Verdana";
+    font-family: "Verdana", sans-serif;
 }
 
 .title { 
     font-weight: bold;
     font-size: 1.2em;
-    margin-bottom: .5em;
+    margin-bottom: .3em;
     column-span: all; /* <-- Title shouldn't break into two columns */
 }
 
 .subtitle { 
     font-size: .9em;
-    margin-bottom: .5em;
+    margin-bottom: .3em;
     column-span: all; /* <-- Title shouldn't break into two columns */
 }
 
