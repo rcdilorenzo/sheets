@@ -60,6 +60,12 @@ RUN pip3 install .
 RUN apt-get remove -y nodejs yarn
 RUN rm -rf /app/web/node_modules
 
+# Install Verdana font for PDF generation
+RUN mkdir -p /usr/share/fonts/truetype/google-fonts
+COPY data/Verdana.ttf /usr/share/fonts/truetype/google-fonts
+COPY ["data/Verdana Bold.ttf", "/usr/share/fonts/truetype/google-fonts"]
+RUN fc-cache -f
+
 ENV PORT=8081
 ENV PYTHONPATH=/app
 
