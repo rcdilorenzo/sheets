@@ -26,7 +26,7 @@ dev-venv: install-hooks venv
 test:
 	$(DOCKER) build -t sheets-base .
 	$(DOCKER) build -t sheets-test -f Dockerfile.test .
-	$(DOCKER) run --rm sheets-test
+	$(DOCKER) run -v $(PWD)/tests/data:/app/tests/data --rm sheets-test
 
 # Clean up
 clean:
