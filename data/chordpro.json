@@ -422,9 +422,7 @@
         }
     },
     "html": {
-        "styles": {
-            "display": "chordpro.css"
-        }
+        "styles": {}
     },
     "a2crd": {
         "infer-titles": true,

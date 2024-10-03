@@ -44,6 +44,10 @@ def test_generate_pdf_endpoint(client):
     assert response.headers["Content-Disposition"] == "attachment; filename=sheet.pdf"
     assert len(response.data) > 0
 
+    # Save to file
+    with open(TEST_DATA_PATH / "we-three-kings.pdf", "wb") as f:
+        f.write(response.data)
+
 
 def test_invalid_request(client):
     data = {
