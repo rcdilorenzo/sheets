@@ -4,12 +4,12 @@ To run the application using Docker, follow these steps:
 
 1. Build the Docker image:
    ```
-   docker build -t sheets .
+   docker build -t sheets-base .
    ```
 
 2. Run the Docker container:
    ```
-   docker run -p 8081:8081 --rm sheets
+   docker run -p 8081:8081 --rm sheets-base
    ```
 
    This will start the service and make it available on `http://localhost:8081`.

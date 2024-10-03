@@ -1,8 +1,14 @@
 # Use an official Ubuntu base image
 FROM ubuntu:22.04
 
+RUN echo "Acquire::http::Pipeline-Depth 0;" > /etc/apt/apt.conf.d/99custom && \
+    echo "Acquire::http::No-Cache true;" >> /etc/apt/apt.conf.d/99custom && \
+    echo "Acquire::BrokenProxy    true;" >> /etc/apt/apt.conf.d/99custom
+
 # Install required packages
-RUN apt-get update && apt-get install -y wget perl curl software-properties-common make libwx-perl
+RUN apt-get clean \
+    && apt-get update \
+    && apt-get install -y wget perl curl software-properties-common make libwx-perl
 
 # Install ChordPro
 RUN cpan -T chordpro
@@ -50,8 +56,9 @@ RUN yarn build
 # Go back to the main app directory
 WORKDIR /app
 
-# Copy the entire project
-COPY . /app
+COPY src /app/src
+COPY data /app/data
+COPY setup.py /app/setup.py
 
 # Install the project
 RUN pip3 install .

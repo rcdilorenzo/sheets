@@ -3,6 +3,7 @@ import { useState } from "react";
 import Header from "./components/Header";
 import Editor from "./components/Editor";
 import Preview from "./components/Preview";
+import Footer from "./components/Footer";
 
 export default function Home() {
   const [chordProText, setChordProText] = useState("");
@@ -130,6 +131,7 @@ export default function Home() {
           downloadContent={downloadContent}
         />
       </main>
+      <Footer />
     </div>
   );
 }
