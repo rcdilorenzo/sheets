@@ -1,9 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Editor from "./components/Editor";
 import Preview from "./components/Preview";
 import Footer from "./components/Footer";
+import ConfigEditor from './components/ConfigEditor';
 
 export default function Home() {
   const [chordProText, setChordProText] = useState("");
@@ -14,6 +15,41 @@ export default function Home() {
   const [showWarning, setShowWarning] = useState(false);
   const [flashMessage, setFlashMessage] = useState<string | null>(null);
   const [transposeAmount, setTransposeAmount] = useState(0);
+  const [config, setConfig] = useState<any>(null);
+
+  const fetchConfig = async () => {
+    try {
+      const response = await fetch('/api/config');
+      const data = await response.json();
+      setConfig(data);
+    } catch (error) {
+      setWarning('Failed to fetch config');
+      setShowWarning(true);
+    }
+  };
+
+  const onError = (error: any) => {
+    setFlashMessage(null);
+    setWarning(error.message);
+    setShowWarning(true);
+  };
+
+  const saveConfig = async (newConfig: any) => {
+    console.log('Saving config:', newConfig);
+    setConfig(newConfig);
+    setFlashMessage('Config saved successfully');
+    setShowWarning(false);
+  };
+
+  const resetConfig = async () => {
+    try {
+      await fetchConfig();
+      setFlashMessage('Config reset successfully');
+    } catch (error) {
+      setWarning('Failed to reset config');
+      setShowWarning(true); 
+    }
+  };
 
   const generateContent = async () => {
     try {
@@ -21,11 +57,17 @@ export default function Home() {
       setWarning(null); // Clear warning
       setShowWarning(false);
 
-      // Generate HTML
+      const payload = {
+        content: chordProText,
+        transpose: transposeAmount,
+        type: 'html',
+        config: config
+      };
+
       const htmlResponse = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: chordProText, transpose: transposeAmount, type: "html" }),
+        body: JSON.stringify(payload),
       });
 
       if (htmlResponse.status === 429) {
@@ -79,7 +121,7 @@ export default function Home() {
       })
       .catch(error => {
         console.error('Error loading example ChordPro:', error);
-        setFlashMessage("Failed to load example. Please try again.");
+        setWarning("Failed to load example. Please try again.");
       });
   };
 
@@ -106,6 +148,10 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    fetchConfig();
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen font-[family-name:var(--font-geist-sans)]">
       <Header />
@@ -122,6 +168,10 @@ export default function Home() {
           warning={warning}
           showWarning={showWarning}
           setShowWarning={setShowWarning}
+          config={config}
+          resetConfig={resetConfig}
+          onSaveConfig={saveConfig}
+          onError={onError}
         />
         <Preview
           activeTab={activeTab}
