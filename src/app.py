@@ -1,4 +1,6 @@
+import json
 import os
+from pathlib import Path
 
 from flask import Flask, jsonify, request, send_file, send_from_directory
 from flask_cors import CORS
@@ -14,6 +16,16 @@ CORS(app)
 limiter = Limiter(key_func=get_remote_address, app=app, default_limits=["200 per day", "50 per hour"])
 
 
+@app.route("/api/config", methods=["GET"])
+@limiter.limit("10 per minute")
+def config_endpoint():
+    config_path = Path(__file__).parents[1] / "data" / "chordpro.json"
+
+    if request.method == "GET":
+        with open(config_path, "r") as config_file:
+            return jsonify(json.load(config_file))
+
+
 @app.route("/api/generate", methods=["POST"])
 @limiter.limit("10 per minute")
 def generate_endpoint():
@@ -24,12 +36,13 @@ def generate_endpoint():
     chord_pro_content = data["content"]
     transpose = data["transpose"]
     generate_type = data["type"]
+    custom_config = data.get("config")
 
     if generate_type == "html":
-        result = generate_html(chord_pro_content, transpose)
+        result = generate_html(chord_pro_content, transpose, custom_config)
         return jsonify(result)
     elif generate_type == "pdf":
-        with generate_pdf(chord_pro_content, transpose) as result:
+        with generate_pdf(chord_pro_content, transpose, custom_config) as result:
             return send_file(result["pdf"], mimetype="application/pdf", as_attachment=True, download_name="sheet.pdf")
     else:
         return jsonify({"error": "Invalid 'type'. Must be 'html' or 'pdf'."}), 400

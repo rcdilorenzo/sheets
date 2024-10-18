@@ -2,7 +2,7 @@ import json
 import subprocess
 from contextlib import contextmanager
 from pathlib import Path
-from tempfile import NamedTemporaryFile
+from tempfile import NamedTemporaryFile, TemporaryDirectory
 
 from bs4 import BeautifulSoup
 
@@ -10,33 +10,42 @@ DATA_PATH = Path(__file__).parent.parent / "data"
 
 
 @contextmanager
-def build_config(css_path: Path):
+def build_config(css_path: Path, custom_config: dict = None):
     with NamedTemporaryFile(mode="w", suffix=".json") as output_file:
         config_path = DATA_PATH / "chordpro.json"
         with open(config_path, "r") as config_file:
             config = json.load(config_file)
-            config["html"]["styles"]["print"] = f"file://{css_path.absolute()}"
 
-            json.dump(config, output_file)
-            output_file.flush()
+        if custom_config:
+            config.update(custom_config)
 
-            yield output_file.name
+        if "html" not in config:
+            config["html"] = {}
+        if "styles" not in config["html"]:
+            config["html"]["styles"] = {}
+        config["html"]["styles"]["print"] = f"file://{css_path.absolute()}"
+
+        json.dump(config, output_file)
+        output_file.flush()
+
+        yield output_file.name
 
 
 @contextmanager
-def build_paths(chord_pro_content: str, css_path: Path):
-    with NamedTemporaryFile(mode="w+", suffix=".chordpro") as f:
-        f.write(chord_pro_content)
-        f.flush()
+def build_paths(chord_pro_content, css_path, custom_config=None):
+    with TemporaryDirectory() as temp_dir:
+        chord_pro_path = Path(temp_dir) / "song.chordpro"
+        with open(chord_pro_path, "w") as f:
+            f.write(chord_pro_content)
 
-        chord_pro_path = Path(f.name)
-
-        with build_config(css_path) as config_path:
+        with build_config(css_path, custom_config) as config_path:
             yield chord_pro_path, config_path
 
 
-def generate_html(chord_pro_content: str, transpose: int, css_path: Path = DATA_PATH / "default.css") -> dict:
-    with build_paths(chord_pro_content, css_path) as (chord_pro_path, config_path):
+def generate_html(
+    chord_pro_content: str, transpose: int, custom_config: dict = None, css_path: Path = DATA_PATH / "default.css"
+) -> dict:
+    with build_paths(chord_pro_content, css_path, custom_config) as (chord_pro_path, config_path):
         command = [
             "chordpro",
             chord_pro_path,
@@ -64,8 +73,10 @@ def generate_html(chord_pro_content: str, transpose: int, css_path: Path = DATA_
 
 
 @contextmanager
-def generate_pdf(chord_pro_content: str, transpose: int, css_path: Path = DATA_PATH / "default.css"):
-    result = generate_html(chord_pro_content, transpose, css_path)
+def generate_pdf(
+    chord_pro_content: str, transpose: int, custom_config: dict = None, css_path: Path = DATA_PATH / "default.css"
+):
+    result = generate_html(chord_pro_content, transpose, custom_config, css_path)
 
     with NamedTemporaryFile(mode="w+", suffix=".html") as html_file:
         html_file.write(result["html"])

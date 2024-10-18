@@ -3,14 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"next dev\" \"cd .. && make run-api\"",
+    "dev": "concurrently \"next dev\" \"cd .. && make run\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "ace-builds": "^1.36.2",
     "next": "14.2.13",
     "react": "^18",
+    "react-ace": "^12.0.0",
     "react-dom": "^18"
   },
   "devDependencies": {
